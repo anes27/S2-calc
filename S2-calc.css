@@ -1,0 +1,584 @@
+        :root {
+            --primary-color: #3A82FF;
+            --primary-light: #5E9BFF;
+            --primary-dark: #1F66E5;
+            --secondary-color: #FF7043;
+            --success-color: #4CAF50;
+            --danger-color: #E53935;
+            --warning-color: #FFA726;
+            --background-light: #F7FAFF;
+            --text-dark: #333;
+            --text-light: #fff;
+            --shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scrollbar-width: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #EEF5FF 0%, #D5E7FF 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            color: var(--text-dark);
+            font-size: 16px;
+        }
+
+        body::before {
+            content: "@Anes-Akagami";
+            position: fixed;
+            top: 7%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            color: rgba(0, 0, 0, 0.1);
+            /* شفاف جدا */
+            white-space: nowrap;
+            z-index: -3;
+            /* خلف كل شيء */
+            pointer-events: none;
+            /* لا يمكن الضغط عليه */
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            margin-top: 100px;
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 12px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+            animation: scaleX 1.2s ease-out forwards;
+        }
+
+        @keyframes scaleX {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 80px;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        tr:nth-child(even) {
+            background: var(--background-light);
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background-color: rgba(58, 130, 255, 0.05);
+            transform: scale(1.01);
+        }
+
+        input[type="number"] {
+            width: 70px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(58, 130, 255, 0.2);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            padding: 12px;
+            border: none;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            color: white;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(58, 130, 255, 0.3);
+            font-weight: 500;
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(58, 130, 255, 0.4);
+            animation: none;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .result {
+            margin-top: 25px;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .result.show {
+            opacity: 1;
+        }
+
+        .results-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .results-table th {
+            background: var(--primary-dark);
+        }
+
+        .general-average {
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .passed {
+            color: var(--success-color);
+        }
+
+        .failed {
+            color: var(--danger-color);
+        }
+
+        /* Welcome Modal */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-modal {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 90%;
+            width: 450px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .welcome-overlay.show .welcome-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .welcome-modal h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 2rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .welcome-modal p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        .welcome-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(58, 130, 255, 0.3);
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .welcome-btn:hover {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(58, 130, 255, 0.4);
+        }
+
+        .welcome-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Notification System */
+        .notifications-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 350px;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notification {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid var(--warning-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideInRight 0.5s ease forwards;
+        }
+
+        .notification.closing {
+            animation: slideOutRight 0.5s ease forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification-content {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .notification-close {
+            background: none;
+            color: #999;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .notification-close:hover {
+            color: var(--danger-color);
+        }
+
+        /* Animation enhancements */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .row-animation {
+            animation: slideInRow 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideInRow {
+            from {
+                opacity: 0;
+                transform: translateX(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 767px) {
+
+            body::before {
+                content: "@Anes-Akagami";
+                position: fixed;
+                top: 10%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 40px;
+                color: rgba(0, 0, 0, 0.1);
+                /* شفاف جدا */
+                white-space: nowrap;
+                z-index: -3;
+                /* خلف كل شيء */
+                pointer-events: none;
+                /* لا يمكن الضغط عليه */
+            }
+
+            body {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+            }
+
+            h1:after {
+                width: 60px;
+                height: 2px;
+            }
+
+            th,
+            td {
+                padding: 8px 6px;
+                font-size: 0.85rem;
+            }
+
+            th {
+                font-size: 0.8rem;
+            }
+
+            input[type="number"] {
+                width: 55px;
+                padding: 6px;
+                font-size: 0.8rem;
+                border-radius: 6px;
+                border-width: 1px;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 0.9rem;
+                max-width: 200px;
+            }
+
+            .result {
+                margin-top: 15px;
+            }
+
+            .general-average {
+                font-size: 1rem;
+                padding: 8px;
+            }
+
+            .welcome-modal {
+                padding: 20px;
+                width: 320px;
+            }
+
+            .welcome-modal h2 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .welcome-modal p {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+            }
+
+            .welcome-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+
+            .notifications-container {
+                max-width: 280px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .notification {
+                padding: 12px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 359px) {
+            body {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .container {
+                padding: 12px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                padding-bottom: 6px;
+            }
+
+            th,
+            td {
+                padding: 6px 4px;
+                font-size: 0.75rem;
+            }
+
+            input[type="number"] {
+                width: 45px;
+                padding: 4px;
+                font-size: 0.75rem;
+            }
+
+            .btn {
+                padding: 8px;
+                font-size: 0.8rem;
+                max-width: 160px;
+            }
+
+            .welcome-modal {
+                padding: 15px;
+                width: 250px;
+            }
+
+            .welcome-modal h2 {
+                font-size: 1.3rem;
+            }
+
+            .welcome-modal p {
+                font-size: 0.85rem;
+            }
+        }
