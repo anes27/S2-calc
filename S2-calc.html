@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester GPA Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <style>
+        :root {
+            --primary-color: #3A82FF;
+            --primary-light: #5E9BFF;
+            --primary-dark: #1F66E5;
+            --secondary-color: #FF7043;
+            --success-color: #4CAF50;
+            --danger-color: #E53935;
+            --warning-color: #FFA726;
+            --background-light: #F7FAFF;
+            --text-dark: #333;
+            --text-light: #fff;
+            --shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scrollbar-width: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #EEF5FF 0%, #D5E7FF 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+            color: var(--text-dark);
+            font-size: 16px;
+        }
+
+        body::before {
+            content: "@Anes-Akagami";
+            position: fixed;
+            top: 7%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            color: rgba(0, 0, 0, 0.1);
+            /* شفاف جدا */
+            white-space: nowrap;
+            z-index: -3;
+            /* خلف كل شيء */
+            pointer-events: none;
+            /* لا يمكن الضغط عليه */
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            margin-top: 100px;
+        }
+
+        .container:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 12px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+            animation: scaleX 1.2s ease-out forwards;
+        }
+
+        @keyframes scaleX {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 80px;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        tr:nth-child(even) {
+            background: var(--background-light);
+        }
+
+        tr {
+            transition: all 0.3s ease;
+        }
+
+        tr:hover {
+            background-color: rgba(58, 130, 255, 0.05);
+            transform: scale(1.01);
+        }
+
+        input[type="number"] {
+            width: 70px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(58, 130, 255, 0.2);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 auto;
+            padding: 12px;
+            border: none;
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            color: white;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(58, 130, 255, 0.3);
+            font-weight: 500;
+            animation: pulseBtn 2s infinite;
+        }
+
+        @keyframes pulseBtn {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .btn:hover {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(58, 130, 255, 0.4);
+            animation: none;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .result {
+            margin-top: 25px;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .result.show {
+            opacity: 1;
+        }
+
+        .results-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .results-table th {
+            background: var(--primary-dark);
+        }
+
+        .general-average {
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .passed {
+            color: var(--success-color);
+        }
+
+        .failed {
+            color: var(--danger-color);
+        }
+
+        /* Welcome Modal */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .welcome-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .welcome-modal {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 90%;
+            width: 450px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .welcome-overlay.show .welcome-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .welcome-modal h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 2rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .welcome-modal p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            animation: fadeIn 1s ease 0.3s both;
+        }
+
+        .welcome-btn {
+            background: linear-gradient(45deg, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(58, 130, 255, 0.3);
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .welcome-btn:hover {
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(58, 130, 255, 0.4);
+        }
+
+        .welcome-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Notification System */
+        .notifications-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 350px;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .notification {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid var(--warning-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideInRight 0.5s ease forwards;
+        }
+
+        .notification.closing {
+            animation: slideOutRight 0.5s ease forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .notification-content {
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .notification-close {
+            background: none;
+            color: #999;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .notification-close:hover {
+            color: var(--danger-color);
+        }
+
+        /* Animation enhancements */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .row-animation {
+            animation: slideInRow 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes slideInRow {
+            from {
+                opacity: 0;
+                transform: translateX(-15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 767px) {
+
+            body::before {
+                content: "@Anes-Akagami";
+                position: fixed;
+                top: 10%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 40px;
+                color: rgba(0, 0, 0, 0.1);
+                /* شفاف جدا */
+                white-space: nowrap;
+                z-index: -3;
+                /* خلف كل شيء */
+                pointer-events: none;
+                /* لا يمكن الضغط عليه */
+            }
+
+            body {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 12px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+                padding-bottom: 8px;
+            }
+
+            h1:after {
+                width: 60px;
+                height: 2px;
+            }
+
+            th,
+            td {
+                padding: 8px 6px;
+                font-size: 0.85rem;
+            }
+
+            th {
+                font-size: 0.8rem;
+            }
+
+            input[type="number"] {
+                width: 55px;
+                padding: 6px;
+                font-size: 0.8rem;
+                border-radius: 6px;
+                border-width: 1px;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 0.9rem;
+                max-width: 200px;
+            }
+
+            .result {
+                margin-top: 15px;
+            }
+
+            .general-average {
+                font-size: 1rem;
+                padding: 8px;
+            }
+
+            .welcome-modal {
+                padding: 20px;
+                width: 320px;
+            }
+
+            .welcome-modal h2 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .welcome-modal p {
+                font-size: 0.95rem;
+                margin-bottom: 20px;
+            }
+
+            .welcome-btn {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+
+            .notifications-container {
+                max-width: 280px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .notification {
+                padding: 12px 15px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 359px) {
+            body {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            .container {
+                padding: 12px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+                margin-bottom: 12px;
+                padding-bottom: 6px;
+            }
+
+            th,
+            td {
+                padding: 6px 4px;
+                font-size: 0.75rem;
+            }
+
+            input[type="number"] {
+                width: 45px;
+                padding: 4px;
+                font-size: 0.75rem;
+            }
+
+            .btn {
+                padding: 8px;
+                font-size: 0.8rem;
+                max-width: 160px;
+            }
+
+            .welcome-modal {
+                padding: 15px;
+                width: 250px;
+            }
+
+            .welcome-modal h2 {
+                font-size: 1.3rem;
+            }
+
+            .welcome-modal p {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Semester GPA Calculator</h1>
+
+        <table id="gradesTable">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Coefficient</th>
+                    <th>TD Grade</th>
+                    <th>Exam Grade</th>
+                </tr>
+            </thead>
+            <tbody id="subjectsTable">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+
+        <button class="btn" onclick="calculateGrades()">Calculate GPA</button>
+
+        <div class="result" id="result">
+            <!-- Results will be shown here -->
+        </div>
+    </div>
+
+    <!-- Welcome Modal -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-modal">
+            <h2>Welcome</h2>
+            <p>Here you can calculate the second semester GPA for the second year.</p>
+            <button class="welcome-btn" onclick="closeWelcome()">Let's Start</button>
+        </div>
+    </div>
+
+    <!-- Notifications Container -->
+    <div class="notifications-container" id="notificationsContainer">
+        <!-- Notifications will be added here -->
+    </div>
+
+    <script>
+        const subjects = [
+            { name: 'Analysis', coef: 5, hasTD: true },
+            { name: 'OOP', coef: 4, hasTD: true },
+            { name: 'Logic', coef: 4, hasTD: true },
+            { name: 'Proba', coef: 4, hasTD: true },
+            { name: 'ISI', coef: 3, hasTD: true },
+            { name: 'Optics', coef: 3, hasTD: true },
+            { name: 'English', coef: 2, hasTD: true },
+            { name: 'Project', coef: 4, hasTD: false }
+        ];
+
+        // Show welcome modal on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('welcomeOverlay').classList.add('show');
+            }, 500);
+        });
+
+        // Close welcome modal
+        function closeWelcome() {
+            document.getElementById('welcomeOverlay').classList.remove('show');
+        }
+
+        const tableBody = document.getElementById('subjectsTable');
+
+        // Populate table with subjects
+        subjects.forEach((subj, index) => {
+            const row = document.createElement('tr');
+            row.className = 'row-animation';
+            row.style.animationDelay = `${index * 0.1}s`;
+
+            row.innerHTML = `
+    <td data-label="Subject">${subj.name}</td>
+    <td data-label="Credits">${subj.coef}</td>
+    <td data-label="Practical">
+      ${subj.hasTD ?
+                    `<input type="number" min="0" max="20" step="0.25" id="td-${index}" onkeydown="handleKeyDown(event)" placeholder="0-20">`
+                    : '-'}
+    </td>
+    <td data-label="Exam">
+      <input type="number" min="0" max="20" step="0.25" id="exam-${index}" onkeydown="handleKeyDown(event)" placeholder="0-20">
+    </td>
+  `;
+
+            tableBody.appendChild(row);
+        });
+
+        // Function to handle Enter key navigation
+        function handleKeyDown(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const inputs = Array.from(document.querySelectorAll('input[type="number"]'));
+                const index = inputs.indexOf(event.target);
+                if (index !== -1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                } else if (index === inputs.length - 1) {
+                    // If at the last input, trigger the calculate function
+                    calculateGrades();
+                }
+            }
+        }
+
+        // Add input validation to prevent values > 20
+        document.querySelectorAll('input[type="number"]').forEach(input => {
+            input.addEventListener('input', function () {
+                if (this.value > 20) {
+                    this.value = 20;
+                }
+            });
+        });
+
+        // Create individual notification
+        function createNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+    <div class="notification-content">${message}</div>
+    <button class="notification-close" onclick="closeNotification(this)">&times;</button>
+  `;
+
+            document.getElementById('notificationsContainer').appendChild(notification);
+
+            // Auto-close after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    closeNotification(notification.querySelector('.notification-close'));
+                }
+            }, 5000);
+        }
+
+        // Close individual notification
+        function closeNotification(closeBtn) {
+            const notification = closeBtn.parentNode;
+            notification.classList.add('closing');
+
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }
+
+        // Calculate grades and show results
+        function calculateGrades() {
+            let totalWeighted = 0;
+            let totalCoef = 0;
+            let missingInputs = [];
+
+            // Check for missing inputs
+            subjects.forEach((subj, index) => {
+                const examInput = document.getElementById(`exam-${index}`);
+                const examValue = examInput.value.trim();
+
+                if (examValue === '') {
+                    missingInputs.push({
+                        type: 'exam',
+                        subject: subj.name
+                    });
+                }
+
+                if (subj.hasTD) {
+                    const tdInput = document.getElementById(`td-${index}`);
+                    const tdValue = tdInput.value.trim();
+
+                    if (tdValue === '') {
+                        missingInputs.push({
+                            type: 'td',
+                            subject: subj.name
+                        });
+                    }
+                }
+            });
+
+            // Show individual notifications for missing inputs
+            missingInputs.forEach((item, index) => {
+                setTimeout(() => {
+                    const message = `You forgot to fill the ${item.subject} ${item.type === 'td' ? 'TD' : 'exam'} grade.`;
+                    createNotification(message);
+                }, index * 300); // Stagger notifications by 300ms
+            });
+
+            // Calculate anyway but with zeros for missing inputs
+            let resultsHTML = `
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Coefficient</th>
+          <th>Final Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+            subjects.forEach((subj, index) => {
+                let subjectGrade = 0;
+                const exam = parseFloat(document.getElementById(`exam-${index}`).value) || 0;
+
+                if (subj.hasTD) {
+                    const td = parseFloat(document.getElementById(`td-${index}`).value) || 0;
+                    subjectGrade = td * 0.4 + exam * 0.6; // 40% Practical + 60% Exam
+                } else {
+                    subjectGrade = exam; // For subject with no practical, grade is just the exam
+                }
+
+                totalWeighted += subjectGrade * subj.coef;
+                totalCoef += subj.coef;
+
+                const gradeClass = subjectGrade >= 10 ? 'passed' : 'failed';
+
+                resultsHTML += `
+      <tr class="animate__animated animate__fadeIn" style="animation-delay: ${index * 0.15}s">
+        <td data-label="Subject">${subj.name}</td>
+        <td data-label="Coefficient">${subj.coef}</td>
+        <td data-label="Final Grade" class="${gradeClass}">${subjectGrade.toFixed(2)}</td>
+      </tr>
+    `;
+            });
+
+            resultsHTML += `</tbody></table>`;
+
+            const avg = totalWeighted / totalCoef;
+            const passStatus = avg >= 10 ? 'PASSED' : 'FAILED';
+            const statusClass = avg >= 10 ? 'passed' : 'failed';
+
+            resultsHTML += `
+    <div class="general-average ${statusClass} animate__animated animate__fadeInUp">
+      Overall GPA: ${avg.toFixed(2)} - ${passStatus}
+    </div>
+  `;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = resultsHTML;
+            resultDiv.classList.add('show');
+
+            // Scroll to results
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+    </script>
+
+</body>
+
+</html>
